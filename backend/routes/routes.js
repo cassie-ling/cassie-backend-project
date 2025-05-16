@@ -34,11 +34,24 @@ router.post('/suppliers/add', (req, res) => {
 
 //finding/updating suppliers by id
 router.put('/suppliers/:id', (req, res) => {
-  SupplierSchema.findOneAndUpdate({id:req.params.productId},req.body)
+  SupplierSchema.findByIdAndUpdate({_id: req.params.id},req.body)
   .then(supplier => {
     console.log("succesfully updated")
     console.log(supplier)
     res.json(supplier)
+  })
+  .catch(err => {
+    console.error(err)
+    res.send(error)
+  })
+})
+
+router.delete('/supplier/:id', (req,res) => {
+  ShoppingSchema.findOneAndDelete({_id: req.params.id})
+  .then(items => {
+    console.log("succesfully deleted")
+    console.log(items)
+    res.json(items)
   })
   .catch(err => {
     console.error(err)
@@ -113,7 +126,7 @@ router.put('/item/:itemId', (req, res) => {
 
 //deleting by item name
 router.delete('/item/:itemId', (req,res) => {
-  ShoppingSchema.findOneAndDelete(req.params.itemId)
+  ShoppingSchema.findOneAndDelete({item: req.params.itemId})
   .then(items => {
     console.log("succesfully deleted")
     console.log(items)
